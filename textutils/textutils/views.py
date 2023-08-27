@@ -5,10 +5,22 @@ def index(request):
     return render(request, 'index.html')
 
 def analyze(request):
+    # Get the text
     djtext = request.GET.get('text', 'default')
-    analyzed=djtext
-    params = {'purpose': "Removing Punctuations", 'analyzed_text': analyzed}
-    return render(request,'analyze.html',params)
+    removepunc=request.GET.get('removepunc','off')
+
+    if removepunc == "on":
+        punctuations = '''!()-[]{};:'"\,<>./?@#$%^&*_~'''
+        analyzed = ""
+        for char in djtext:
+            if char not in punctuations:
+                analyzed = analyzed + char
+        params = {'purpose': 'Removed Punctuations', 'analyzed_text': analyzed}
+        return render(request, 'analyze.html', params)
+
+    else:
+        return HttpResponse('Error')
+    
 def removepunc(request):
     djtext = request.GET.get('text', 'default')
     print(djtext)
