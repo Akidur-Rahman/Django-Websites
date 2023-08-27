@@ -4,6 +4,11 @@ from django.shortcuts import render
 def index(request):
     return render(request, 'index.html')
 
+def analyze(request):
+    djtext = request.GET.get('text', 'default')
+    analyzed=djtext
+    params = {'purpose': "Removing Punctuations", 'analyzed_text': analyzed}
+    return render(request,'analyze.html',params)
 def removepunc(request):
     djtext = request.GET.get('text', 'default')
     print(djtext)
