@@ -30,18 +30,16 @@ def analyze(request):
         params = {'purpose':'Change to Uppercase', 'analyzed_text': djtext}
     if newlineremover=="on":
         for char in djtext:
-            if char !="\n":
+            if char not in ["\n", "\r"]:
                 analyze=analyze+char
         djtext = analyze
         analyze= ""
         params = {'purpose': 'Removed NewLines', 'analyzed_text': djtext}
     if extraspaceremover=="on":
         index = 0
-        for char in djtext:
-            if char[index] != " " and char[index + 1] != " ":
+        for index, char in enumerate(djtext):
+            if not(djtext[index] == " " and djtext[index+1]==" "):
                 analyze = analyze + char
-                if index < len(djtext):
-                    index += 1
         params = {'purpose': 'Removed spaces', 'analyzed_text': analyze}
 
     return render(request, 'analyze.html', params)
